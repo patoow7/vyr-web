@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYR — Más clientes para tu negocio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --accent: #C6FF00;
+    --accent-dim: #9ECC00;
+    --text: #F5F5F0;
+    --muted: #888880;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, .brand {
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 5%;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: rgba(10,10,10,0.7);
+    transition: background 0.3s;
+  }
+  .brand { font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; color: var(--white); }
+  .brand span { color: var(--accent); }
+  nav a.nav-cta {
+    background: var(--accent); color: var(--bg);
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.85rem; padding: 10px 22px;
+    border-radius: 100px; text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  nav a.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(198,255,0,0.35); }
+
+  /* ── SECTION WRAPPER ── */
+  .section { padding: 100px 5%; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ── LABELS ── */
+  .label {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(198,255,0,0.3);
+    background: rgba(198,255,0,0.07);
+    padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.95rem; padding: 16px 30px;
+    border-radius: 100px; text-decoration: none;
+    cursor: pointer; border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-3px); }
+  .btn-primary {
+    background: var(--accent); color: var(--bg);
+    box-shadow: 0 0 0 rgba(198,255,0,0);
+  }
+  .btn-primary:hover { box-shadow: 0 10px 40px rgba(198,255,0,0.4); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-wa {
+    background: #25D366; color: #fff;
+    box-shadow: 0 0 0 rgba(37,211,102,0);
+  }
+  .btn-wa:hover { box-shadow: 0 10px 40px rgba(37,211,102,0.45); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding-top: 120px; padding-bottom: 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 20%, rgba(198,255,0,0.10) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 10% 80%, rgba(198,255,0,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(198,255,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(198,255,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 100px;
+    font-size: 0.8rem; color: var(--muted); margin-bottom: 28px;
+  }
+  .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+  h1 {
+    font-size: clamp(2.8rem, 5vw, 4.4rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -2px; margin-bottom: 24px;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+    max-width: 460px; margin-bottom: 36px;
+  }
+  .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 48px; }
+  .hero-stats {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-item {}
+  .stat-num { font-family: 'Syne',sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+
+  /* hero visual */
+  .hero-visual {
+    position: relative;
+  }
+  .mockup-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .mockup-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(198,255,0,0.12) 0%, transparent 70%);
+  }
+  .mockup-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .dots span:nth-child(1) { background: #FF5F57; }
+  .dots span:nth-child(2) { background: #FFBD2E; }
+  .dots span:nth-child(3) { background: #28CA42; }
+  .mockup-badge {
+    font-size: 0.72rem; color: var(--accent);
+    background: rgba(198,255,0,0.1);
+    border: 1px solid rgba(198,255,0,0.2);
+    padding: 4px 10px; border-radius: 100px;
+    font-weight: 600;
+  }
+  .mockup-img {
+    width: 100%; height: 180px;
+    background: linear-gradient(135deg, #181818 0%, #1e1e1e 100%);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+  .mockup-img::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(to top, var(--surface), transparent);
+  }
+  .mockup-bar {
+    height: 10px; border-radius: 10px;
+    background: var(--border); margin-bottom: 10px; overflow: hidden;
+  }
+  .mockup-bar-fill {
+    height: 100%; border-radius: 10px;
+    background: var(--accent);
+    animation: fill 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes fill { from{width:40%} to{width:85%} }
+  .mockup-row { display: flex; gap: 10px; margin-top: 12px; }
+  .mockup-chip {
+    flex: 1; height: 36px; border-radius: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; color: var(--muted); font-weight: 500;
+  }
+  .mockup-chip.active { border-color: rgba(198,255,0,0.4); color: var(--accent); }
+  .float-card {
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .float-card.fc1 {
+    top: -20px; right: -20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .float-card.fc2 {
+    bottom: 20px; left: -30px;
+    animation-delay: 1.5s;
+  }
+  .fc-icon { font-size: 1.4rem; }
+  .fc-text .fc-title { font-family: 'Syne',sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--text); }
+  .fc-text .fc-sub { font-size: 0.7rem; color: var(--muted); }
+  .fc-num { font-family: 'Syne',sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+  .fc-label { font-size: 0.68rem; color: var(--muted); }
+
+  /* ── SOCIAL PROOF MARQUEE ── */
+  #logos {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; gap: 50px; width: max-content;
+    animation: marquee 22s linear infinite;
+  }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .logo-pill {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 12px 22px; border-radius: 100px;
+    font-family: 'Syne',sans-serif; font-size: 0.85rem; font-weight: 700;
+    color: var(--muted); white-space: nowrap;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .logo-pill:hover { color: var(--text); border-color: #444; }
+  .logo-pill .li { font-size: 1.1rem; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--bg); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+  .testi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .testi-card:hover { transform: translateY(-6px); border-color: rgba(198,255,0,0.3); }
+  .testi-card::before {
+    content: '"';
+    position: absolute; top: -10px; right: 20px;
+    font-size: 8rem; color: rgba(198,255,0,0.06);
+    font-family: 'Syne',sans-serif; font-weight: 800;
+    line-height: 1;
+  }
+  .stars { color: var(--accent); font-size: 0.9rem; margin-bottom: 14px; letter-spacing: 2px; }
+  .testi-text { font-size: 0.95rem; line-height: 1.7; color: var(--text); margin-bottom: 24px; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, #7acc00 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1rem;
+    color: var(--bg);
+  }
+  .testi-name { font-family: 'Syne',sans-serif; font-size: 0.88rem; font-weight: 700; }
+  .testi-biz { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .result-badge {
+    display: inline-block; margin-top: 14px;
+    background: rgba(198,255,0,0.1); border: 1px solid rgba(198,255,0,0.25);
+    color: var(--accent); padding: 5px 12px; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 600;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--surface); }
+  .services-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .services-text h2 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px; }
+  .services-text p { color: var(--muted); line-height: 1.7; margin-bottom: 36px; }
+  .benefit-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .benefit-list li {
+    display: flex; align-items: flex-start; gap: 14px;
+    font-size: 0.95rem; line-height: 1.5;
+  }
+  .benefit-list li .icon {
+    flex-shrink: 0; width: 36px; height: 36px;
+    background: rgba(198,255,0,0.08); border: 1px solid rgba(198,255,0,0.2);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .benefit-list li strong { display: block; color: var(--text); font-weight: 600; }
+  .benefit-list li span { color: var(--muted); font-size: 0.85rem; }
+
+  .services-cards { display: flex; flex-direction: column; gap: 16px; }
+  .svc-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 24px;
+    display: flex; align-items: center; gap: 16px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .svc-card:hover { border-color: rgba(198,255,0,0.3); transform: translateX(6px); }
+  .svc-num {
+    flex-shrink: 0;
+    font-family: 'Syne',sans-serif; font-size: 1.6rem; font-weight: 800;
+    color: rgba(198,255,0,0.25);
+  }
+  .svc-title { font-family: 'Syne',sans-serif; font-weight: 700; font-size: 1rem; }
+  .svc-desc { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+  /* ── HOW IT WORKS ── */
+  #how { background: var(--bg); }
+  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 60px; position: relative; }
+  .steps::before {
+    content: '';
+    position: absolute; top: 36px; left: 16%; right: 16%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    z-index: 0;
+  }
+  .step { text-align: center; padding: 0 24px; position: relative; z-index: 1; }
+  .step-num {
+    width: 72px; height: 72px; margin: 0 auto 24px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne',sans-serif; font-size: 1.4rem; font-weight: 800;
+    color: var(--accent);
+    position: relative;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .step:hover .step-num { background: rgba(198,255,0,0.1); border-color: var(--accent); }
+  .step-icon { font-size: 1.5rem; margin-bottom: 16px; }
+  .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+  .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── PORTFOLIO ── */
+  #portfolio { background: var(--surface); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+  .port-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .port-card:hover { transform: translateY(-8px); border-color: rgba(198,255,0,0.3); }
+  .port-thumb {
+    height: 180px; display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; position: relative; overflow: hidden;
+  }
+  .port-thumb::before {
+    content: ''; position: absolute; inset: 0;
+    opacity: 0.6;
+  }
+  .port-thumb.resto::before { background: linear-gradient(135deg,#1a0a0a,#2d1515); }
+  .port-thumb.dent::before { background: linear-gradient(135deg,#0a0a1a,#151528); }
+  .port-thumb.gym::before { background: linear-gradient(135deg,#0a1a0a,#152815); }
+  .port-emoji { position: relative; z-index: 1; }
+  .port-body { padding: 22px; }
+  .port-tag {
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .port-name { font-family: 'Syne',sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .port-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+  .port-results { display: flex; flex-wrap: wrap; gap: 8px; }
+  .port-result {
+    font-size: 0.72rem; font-weight: 600;
+    background: rgba(198,255,0,0.08); border: 1px solid rgba(198,255,0,0.2);
+    color: var(--accent); padding: 4px 10px; border-radius: 100px;
+  }
+
+  /* ── PRICING ── */
+  #pricing { background: var(--bg); }
+  .pricing-wrap { max-width: 780px; margin: 56px auto 0; }
+  .pricing-card {
+    background: var(--surface); border: 1px solid rgba(198,255,0,0.3);
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 0 80px rgba(198,255,0,0.06);
+  }
+  .pricing-top {
+    background: linear-gradient(135deg, rgba(198,255,0,0.08) 0%, transparent 100%);
+    padding: 40px 44px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+  }
+  .pricing-name { font-family: 'Syne',sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .pricing-title { font-family: 'Syne',sans-serif; font-size: 1.8rem; font-weight: 800; line-height: 1.2; }
+  .pricing-price-box { text-align: right; }
+  .price-setup { color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }
+  .price-num { font-family: 'Syne',sans-serif; font-size: 2.6rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .price-sub { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .price-monthly { font-family: 'Syne',sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-top: 8px; }
+
+  .pricing-features { padding: 36px 44px; border-bottom: 1px solid var(--border); }
+  .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .feat-item { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+  .feat-item .check { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+  .feat-item .check-no { color: #444; font-size: 1.1rem; flex-shrink: 0; }
+
+  .pricing-bottom { padding: 32px 44px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .guarantee { display: flex; align-items: center; gap: 10px; }
+  .guarantee-icon { font-size: 1.8rem; }
+  .guarantee-text .g-title { font-family: 'Syne',sans-serif; font-weight: 700; font-size: 0.9rem; }
+  .guarantee-text .g-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── FINAL CTA ── */
+  #cta {
+    padding: 120px 5%;
+    background: var(--surface);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(198,255,0,0.08) 0%, transparent 70%);
+  }
+  #cta .container { position: relative; z-index: 1; }
+  #cta h2 { font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 20px; }
+  #cta p { color: var(--muted); font-size: 1.1rem; max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+  .cta-btns { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px; }
+  .urgency {
+    margin-top: 24px; font-size: 0.83rem;
+    color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .urgency span { color: #FF6B6B; font-weight: 600; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 5%;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  footer .brand { font-size: 1.3rem; }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+  footer .footer-links { display: flex; gap: 24px; }
+  footer .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  footer .footer-links a:hover { color: var(--accent); }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 1000;
+    width: 62px; height: 62px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 6px 30px rgba(37,211,102,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: wa-bounce 3s ease-in-out infinite;
+  }
+  .wa-float:hover {
+    transform: scale(1.12);
+    box-shadow: 0 10px 50px rgba(37,211,102,0.7);
+    animation: none;
+  }
+  @keyframes wa-bounce {
+    0%,100%{transform:scale(1)} 50%{transform:scale(1.08)}
+  }
+  .wa-float svg { width: 30px; height: 30px; fill: white; }
+  .wa-tooltip {
+    position: absolute; right: 76px; top: 50%; transform: translateY(-50%);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-family: 'Syne',sans-serif; font-weight: 600;
+    font-size: 0.8rem; padding: 8px 14px; border-radius: 10px;
+    white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .wa-float:hover .wa-tooltip { opacity: 1; }
+
+  /* ── SECTION HEADERS ── */
+  .section-header { margin-bottom: 0; }
+  .section-header h2 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 12px; }
+  .section-header p { color: var(--muted); font-size: 1rem; max-width: 500px; line-height: 1.7; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 50px; }
+    .hero-visual { display: none; }
+    .hero-stats { gap: 20px; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .services-inner { grid-template-columns: 1fr; gap: 44px; }
+    .steps { grid-template-columns: 1fr; gap: 44px; }
+    .steps::before { display: none; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .pricing-top { flex-direction: column; }
+    .pricing-price-box { text-align: left; }
+    footer { flex-direction: column; text-align: center; }
+    .wa-float { width: 54px; height: 54px; bottom: 20px; right: 20px; }
+    nav { padding: 16px 5%; }
+    .section { padding: 72px 5%; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* ── DIVIDER ── */
+  .accent-line { width: 60px; height: 3px; background: var(--accent); border-radius: 3px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="brand">V<span>Y</span>R</div>
+  <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20quiero%20más%20información%20sobre%20páginas%20web" class="nav-cta" target="_blank">Quiero más clientes →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" class="section">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge fade-up">
+          <span class="dot"></span>
+          Disponible para nuevos proyectos este mes
+        </div>
+        <h1 class="fade-up delay-1">Tu negocio merece <em>más clientes</em>, no menos.</h1>
+        <p class="hero-sub fade-up delay-2">
+          Tienes buenas reseñas, buen servicio y no tienes página web.
+          Eso se llama dinero dejado sobre la mesa. Nosotros lo recogemos por ti.
+        </p>
+        <div class="hero-btns fade-up delay-3">
+          <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20quiero%20más%20clientes%20para%20mi%20negocio" target="_blank" class="btn btn-wa">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Escríbeme por WhatsApp
+          </a>
+          <a href="#cta" class="btn btn-outline">Agendar una llamada</a>
+        </div>
+        <div class="hero-stats fade-up delay-4">
+          <div class="stat-item">
+            <div class="stat-num">+40</div>
+            <div class="stat-label">negocios atendidos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">72h</div>
+            <div class="stat-label">entrega promedio</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">3×</div>
+            <div class="stat-label">más visibilidad online</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-up delay-2">
+        <div class="mockup-card">
+          <div class="mockup-top">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="mockup-badge">🔴 En vivo</div>
+          </div>
+          <div class="mockup-img">
+            <span class="port-emoji">🏠</span>
+          </div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;font-weight:500">Visitas esta semana</div>
+          <div class="mockup-bar"><div class="mockup-bar-fill"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);margin-bottom:12px">
+            <span>Antes de VYR</span><span style="color:var(--accent);font-weight:700">↑ 312%</span>
+          </div>
+          <div class="mockup-row">
+            <div class="mockup-chip active">💰 Ventas</div>
+            <div class="mockup-chip">📞 Llamadas</div>
+            <div class="mockup-chip">⭐ Reseñas</div>
+          </div>
+        </div>
+        <div class="float-card fc1">
+          <div class="fc-icon">📈</div>
+          <div class="fc-text">
+            <div class="fc-title">Nuevos clientes</div>
+            <div class="fc-sub">Este mes</div>
+          </div>
+          <div style="margin-left:8px">
+            <div class="fc-num">+28</div>
+          </div>
+        </div>
+        <div class="float-card fc2">
+          <div class="fc-num" style="font-size:1.1rem">Google #1</div>
+          <div class="fc-label">posición local ✅</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+</section>
+
+<!-- ── LOGOS ── -->
+<div id="logos">
+  <div class="marquee-track">
+    <div class="logo-pill"><span class="li">🍕</span> La Trattoria</div>
+    <div class="logo-pill"><span class="li">🦷</span> Clínica Smile</div>
+    <div class="logo-pill"><span class="li">💪</span> FitCore Gym</div>
+    <div class="logo-pill"><span class="li">✂️</span> Estética Glam</div>
+    <div class="logo-pill"><span class="li">🔧</span> AutoCar MX</div>
+    <div class="logo-pill"><span class="li">🌮</span> Taquería El Rey</div>
+    <div class="logo-pill"><span class="li">🏠</span> Inmobilia Pro</div>
+    <div class="logo-pill"><span class="li">👗</span> Boutique Nova</div>
+    <!-- repeat -->
+    <div class="logo-pill"><span class="li">🍕</span> La Trattoria</div>
+    <div class="logo-pill"><span class="li">🦷</span> Clínica Smile</div>
+    <div class="logo-pill"><span class="li">💪</span> FitCore Gym</div>
+    <div class="logo-pill"><span class="li">✂️</span> Estética Glam</div>
+    <div class="logo-pill"><span class="li">🔧</span> AutoCar MX</div>
+    <div class="logo-pill"><span class="li">🌮</span> Taquería El Rey</div>
+    <div class="logo-pill"><span class="li">🏠</span> Inmobilia Pro</div>
+    <div class="logo-pill"><span class="li">👗</span> Boutique Nova</div>
+  </div>
+</div>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Testimonios</div>
+      <h2>Negocios que <em style="color:var(--accent)">ya crecieron</em> con VYR</h2>
+      <p>No somos diseñadores que hacen páginas bonitas. Somos el equipo que te ayuda a conseguir más clientes.</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">"Llevaba 3 años sin página web y pensaba que no la necesitaba. El primer mes con VYR tuve 18 clientes nuevos que llegaron directo desde Google. No lo podía creer."</p>
+        <div class="result-badge">📈 +18 clientes en el primer mes</div>
+        <div class="testi-author" style="margin-top:16px">
+          <div class="testi-avatar">MR</div>
+          <div>
+            <div class="testi-name">Marco Rodríguez</div>
+            <div class="testi-biz">🦷 Consultorio Dental, Ecatepec</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">"Tenía reseñas increíbles en Google pero nadie llegaba. VYR me hizo una página en menos de una semana y ahora mi restaurante está siempre lleno los fines de semana."</p>
+        <div class="result-badge">🍽️ Mesas llenas cada fin de semana</div>
+        <div class="testi-author" style="margin-top:16px">
+          <div class="testi-avatar">SL</div>
+          <div>
+            <div class="testi-name">Sandra López</div>
+            <div class="testi-biz">🌮 Restaurante El Sabor, CDMX</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-text">"Competía con gimnasios grandes que me ganaban siempre. Ahora mi gym aparece primero en Google en mi colonia y conseguí 40 membresías nuevas en 6 semanas."</p>
+        <div class="result-badge">💪 40 nuevas membresías en 6 semanas</div>
+        <div class="testi-author" style="margin-top:16px">
+          <div class="testi-avatar">JV</div>
+          <div>
+            <div class="testi-name">Jorge Villanueva</div>
+            <div class="testi-biz">💪 FitZone Gym, Tlalnepantla</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services" class="section">
+  <div class="container">
+    <div class="services-inner">
+      <div class="services-text">
+        <div class="label">Lo que hacemos</div>
+        <h2>Una página que trabaja mientras tú <em style="color:var(--accent)">duermes.</em></h2>
+        <p>No es solo "tener página". Es tener un vendedor 24/7 que aparece en Google, convence a tus clientes y los lleva directo a ti.</p>
+        <ul class="benefit-list">
+          <li>
+            <div class="icon">🔍</div>
+            <div>
+              <strong>Aparecer en Google</strong>
+              <span>Optimización local para que te encuentren primero cuando alguien busca lo que tú haces en tu zona.</span>
+            </div>
+          </li>
+          <li>
+            <div class="icon">📱</div>
+            <div>
+              <strong>Diseño que convierte</strong>
+              <span>Tu página se ve perfecta en celular (donde el 92% de tus clientes te van a buscar).</span>
+            </div>
+          </li>
+          <li>
+            <div class="icon">⚡</div>
+            <div>
+              <strong>Velocidad garantizada</strong>
+              <span>Páginas rápidas. Si tarda más de 3 segundos, el cliente se va. Las nuestras no tardan.</span>
+            </div>
+          </li>
+          <li>
+            <div class="icon">🎯</div>
+            <div>
+              <strong>CTAs que funcionan</strong>
+              <span>Botones de WhatsApp, llamadas y formularios estratégicamente colocados para convertir visitas en clientes.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="services-cards">
+        <div class="svc-card">
+          <div class="svc-num">01</div>
+          <div>
+            <div class="svc-title">Diseño web profesional</div>
+            <div class="svc-desc">Páginas modernas, únicas para tu marca y 100% en español mexicano.</div>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">02</div>
+          <div>
+            <div class="svc-title">SEO local en Google</div>
+            <div class="svc-desc">Aparece cuando alguien busca tu negocio cerca. Sin pagar anuncios.</div>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">03</div>
+          <div>
+            <div class="svc-title">Hosting + mantenimiento</div>
+            <div class="svc-desc">Tu página siempre activa, segura y actualizada. Sin que te preocupes.</div>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">04</div>
+          <div>
+            <div class="svc-title">Soporte en WhatsApp</div>
+            <div class="svc-desc">Respuesta en menos de 24 horas. Sin tickets ni call centers.</div>
+          </div>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">05</div>
+          <div>
+            <div class="svc-title">Integración con Google Maps</div>
+            <div class="svc-desc">Conectamos tu negocio con Google My Business para más visibilidad.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how" class="section">
+  <div class="container">
+    <div class="section-header" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="label">Proceso</div>
+      <h2>De cero a online en <em style="color:var(--accent)">72 horas</em></h2>
+      <p>Sin tecnicismos, sin vueltas, sin drama. Así funciona trabajar con nosotros.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">💬</div>
+        <h3>Hablamos 15 min</h3>
+        <p>Me cuentas de tu negocio, tus clientes y qué necesitas. Sin costo, sin compromisos. Solo una plática honesta.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">⚡</div>
+        <h3>Diseñamos y construimos</h3>
+        <p>Desarrollamos tu página en 72 horas. La revisas, nos dices qué cambiar y la dejamos perfecta.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🚀</div>
+        <h3>Tu negocio despega</h3>
+        <p>Publicamos tu página, optimizamos para Google y empezamos a traerte clientes. Nosotros nos encargamos de todo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PORTFOLIO ── -->
+<section id="portfolio" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Casos de éxito</div>
+      <h2>Negocios reales, <em style="color:var(--accent)">resultados reales.</em></h2>
+      <p>Mira lo que logramos con negocios como el tuyo.</p>
+    </div>
+    <div class="portfolio-grid">
+
+      <div class="port-card">
+        <div class="port-thumb resto"><span class="port-emoji">🍽️</span></div>
+        <div class="port-body">
+          <div class="port-tag">Restaurante</div>
+          <div class="port-name">Taquería La Familia</div>
+          <div class="port-desc">Tenían 4.8 estrellas en Google pero sin página web. Diseñamos una landing page con menú visual, botón de WhatsApp y reservas online.</div>
+          <div class="port-results">
+            <div class="port-result">+65% pedidos online</div>
+            <div class="port-result">Pos. #1 en Google Maps</div>
+            <div class="port-result">4 semanas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="port-card">
+        <div class="port-thumb dent"><span class="port-emoji">🦷</span></div>
+        <div class="port-body">
+          <div class="port-tag">Consultorio Dental</div>
+          <div class="port-name">Dra. García — Sonrisa Plus</div>
+          <div class="port-desc">La doctora quería diferenciarse de la competencia. Creamos una página de confianza con casos de éxito, testimonios y agenda online.</div>
+          <div class="port-results">
+            <div class="port-result">+22 citas nuevas/mes</div>
+            <div class="port-result">Tasa de conversión 8%</div>
+            <div class="port-result">3 semanas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="port-card">
+        <div class="port-thumb gym"><span class="port-emoji">💪</span></div>
+        <div class="port-body">
+          <div class="port-tag">Gimnasio</div>
+          <div class="port-name">PowerLife Gym Neza</div>
+          <div class="port-desc">Competían contra cadenas grandes con presupuesto enorme. Los posicionamos primero en búsquedas locales con una página atractiva y optimizada.</div>
+          <div class="port-results">
+            <div class="port-result">+40 membresías en 6 sem.</div>
+            <div class="port-result">ROI del 900%</div>
+            <div class="port-result">5 semanas</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing" class="section">
+  <div class="container">
+    <div class="section-header" style="text-align:center;max-width:600px;margin:0 auto 0">
+      <div class="label">Inversión</div>
+      <h2>Precio claro, <em style="color:var(--accent)">sin sorpresas.</em></h2>
+      <p>Un solo plan. Todo incluido. Diseñado para negocios locales que quieren crecer sin gastar una fortuna.</p>
+    </div>
+    <div class="pricing-wrap">
+      <div class="pricing-card">
+        <div class="pricing-top">
+          <div>
+            <div class="pricing-name">Plan completo VYR</div>
+            <div class="pricing-title">Todo lo que necesitas<br>para conseguir más clientes</div>
+          </div>
+          <div class="pricing-price-box">
+            <div class="price-setup">Pago de arranque</div>
+            <div class="price-num">$4,900</div>
+            <div class="price-sub">pesos MXN, pago único</div>
+            <div class="price-monthly">+ $699/mes mantenimiento</div>
+          </div>
+        </div>
+
+        <div class="pricing-features">
+          <div class="feat-grid">
+            <div class="feat-item"><span class="check">✓</span> Página web profesional</div>
+            <div class="feat-item"><span class="check">✓</span> Diseño 100% a tu medida</div>
+            <div class="feat-item"><span class="check">✓</span> Optimización SEO local</div>
+            <div class="feat-item"><span class="check">✓</span> Hosting incluido</div>
+            <div class="feat-item"><span class="check">✓</span> Dominio .com.mx o .mx</div>
+            <div class="feat-item"><span class="check">✓</span> Certificado SSL (https)</div>
+            <div class="feat-item"><span class="check">✓</span> Botones WhatsApp y llamadas</div>
+            <div class="feat-item"><span class="check">✓</span> Google My Business</div>
+            <div class="feat-item"><span class="check">✓</span> Actualizaciones mensuales</div>
+            <div class="feat-item"><span class="check">✓</span> Soporte WhatsApp directo</div>
+            <div class="feat-item"><span class="check">✓</span> Reporte mensual de visitas</div>
+            <div class="feat-item"><span class="check">✓</span> Entrega en 72 horas</div>
+          </div>
+        </div>
+
+        <div class="pricing-bottom">
+          <div class="guarantee">
+            <div class="guarantee-icon">🛡️</div>
+            <div class="guarantee-text">
+              <div class="g-title">Garantía de satisfacción</div>
+              <div class="g-sub">Si no te gusta el diseño, lo rehacemos. Sin costo extra.</div>
+            </div>
+          </div>
+          <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20quiero%20contratar%20el%20plan%20VYR%20para%20mi%20negocio" target="_blank" class="btn btn-primary">
+            Quiero empezar ahora →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section id="cta">
+  <div class="container">
+    <div class="label">Última llamada</div>
+    <h2>Cada día sin página web<br>es un cliente que se va <em style="color:var(--accent)">con tu competencia.</em></h2>
+    <p>Tu competencia ya tiene página. Ya aparece en Google. Ya está tomando tus clientes. ¿Cuánto tiempo más vas a esperar?</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20quiero%20más%20clientes%20para%20mi%20negocio" target="_blank" class="btn btn-wa" style="font-size:1rem;padding:18px 34px">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escríbeme ahora, es gratis
+      </a>
+      <a href="#" class="btn btn-outline" style="font-size:1rem;padding:18px 34px">
+        📅 Agendar llamada de 15 min
+      </a>
+    </div>
+    <div class="urgency">
+      <span>⚠️ Solo aceptamos 5 nuevos clientes por mes.</span> Quedan 2 lugares disponibles.
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="brand">V<span>Y</span>R</div>
+  <p>© 2025 VYR. Diseño web para negocios locales en México.</p>
+  <div class="footer-links">
+    <a href="#">Privacidad</a>
+    <a href="#">Contacto</a>
+    <a href="https://wa.me/521XXXXXXXXXX" target="_blank">WhatsApp</a>
+  </div>
+</footer>
+
+<!-- ── WHATSAPP FLOAT ── -->
+<a class="wa-float" href="https://wa.me/521XXXXXXXXXX?text=Hola%2C%20me%20interesa%20una%20página%20web%20para%20mi%20negocio" target="_blank" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <div class="wa-tooltip">¿Hablamos? 💬</div>
+</a>
+
+</body>
+</html>
